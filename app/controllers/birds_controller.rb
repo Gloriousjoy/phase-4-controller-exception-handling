@@ -14,12 +14,10 @@ class BirdsController < ApplicationController
 
   # GET /birds/:id
   def show
-    bird = Bird.find_by(id: params[:id])
-    if bird
+    bird = Bird.find(id: params[:id])
       render json: bird
-    else
-      render json: { error: "Bird not found" }, status: :not_found
-    end
+    rescue ActiveRecord::RecordNotFound
+      render_not_found_response
   end
 
   # PATCH /birds/:id
@@ -60,5 +58,7 @@ class BirdsController < ApplicationController
   def bird_params
     params.permit(:name, :species, :likes)
   end
-
+  def render_not_found_response
+    render json: { error: "Bird not found" }, status: :not_found
+  end
 end
