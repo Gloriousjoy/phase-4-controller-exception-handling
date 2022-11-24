@@ -1,4 +1,5 @@
 class BirdsController < ApplicationController
+rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   # GET /birds
   def index
@@ -16,8 +17,6 @@ class BirdsController < ApplicationController
   def show
     bird = Bird.find(id: params[:id])
       render json: bird
-    rescue ActiveRecord::RecordNotFound
-      render_not_found_response
   end
 
   # PATCH /birds/:id
